@@ -49,7 +49,7 @@ var dictionary = [
 [["luka"    ],["hand", "arm"]],
 [["lukin"   ],["see", "look at", "watch", "read", "look", "watch out", "pay attention", "visually"]],
 [["lupa"    ],["hole", "orifice", "window", "door", "loop"]],
-[["ma"  ],["land", "earth country", "(outdoor) area"]],
+[["ma"  ],["land", "earth", "country", "(outdoor) area"]],
 [["mama"    ],["parent", "mother", "father", "of the parent", "parental", "maternal", "fatherly"]],
 [["mani"    ],["money", "material wealth", "currency", "dollar", "capital"]],
 [["meli"    ],["woman", "female", "girl", "wife", "girlfriend", "female", "feminine", "womanly"]],
