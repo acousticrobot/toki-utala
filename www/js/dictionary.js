@@ -1,6 +1,6 @@
 
 var dictionary = [
-[["a"   ],["ah", "ha", "uh", "oh", "ooh", "aw", "well"]],
+[["a"   ],["ah", "ha", "uh", "oh", "ooh", "aw"]],
 [["akesi"   ],["non-cute animal", "reptile", "amphibian"]],
 [["ala" ],["no","no!", "not", "none", "un-", "nothing", "negation", "zero"]],
 [["alasa"   ],["gather","hunt"]],
