@@ -119,7 +119,7 @@ var dictionary = [
 [["walo"    ],["while", "light (colour)", "white thing", "white part", "whiteness", "lightness"]],
 [["wan" ],["one", "a", "unit", "element", "particle", "part", "piece", "unite", "make one"]],
 [["waso"    ],["bird", "winged animal"]],
-[["wawa"    ],["energy", "strength", "power", "energetic", "strong", "fierce", "intense", "sure", "confident", "strengthen", "energize empower"]],
+[["wawa"    ],["energy", "strength", "power", "energetic", "strong", "fierce", "intense", "sure", "confident", "strengthen", "energize", "empower"]],
 [["weka"    ],["away", "absent", "missing", "absence", "throw away", "remove", "get rid of"]],
 [["wile"    ],["to want", "need wish", "want", "have to", "must", "will", "should", "desire", "need", "will", "necessary"]]
 ];
