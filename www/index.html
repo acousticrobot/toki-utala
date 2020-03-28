@@ -51,16 +51,20 @@ body {
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 0px;
+  margin-top: 0px;
+  padding-bottom: auto;
   background-color: #f5f5f5;
 }
 
 .form-signin {
   width: 100%;
   max-width: 320px;
-  padding: 15px;
-  margin: auto;
+  padding-left:  15px;
+  padding-right:  15px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: auto;
 }
 
 .form-label-group {
@@ -122,6 +126,16 @@ body {
   color: #777;
 }
 
+@font-face {
+  font-family: sitelenpona;
+  src: url(fonts/linjapona3-5OTF.ttf);
+}
+
+.sitelenpona {
+  font-family: sitelenpona;
+  font-size: 120%;
+}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {
@@ -174,7 +188,7 @@ a {
 a:active {
 }
 #targetWord{
-     text-transform: uppercase; 
+     
 }
 
 li {
@@ -198,12 +212,12 @@ li {
 }
 
 h1{
+  font-size: 180%;
     height:auto;
 }
 
 .sitelensitelen{
-    height:1em;
-    width:1em;
+    height:2em;
 }
         </style>
 
@@ -239,29 +253,115 @@ function fisherYates(myArray,nb_picks)
 
 var choiceCount=5;
 var answer=-1;
-var highScore = localStorage.getItem("highScore");
+var mode = localStorage.getItem("mode");
+if (mode==null){
+  mode=0;
+} else {
+  mode=parseInt(mode)
+}
+
+var highScore = localStorage.getItem("highScore"+mode);
 if (highScore==null){
     highScore=0;
+} else {
+  highscore = parseInt(highscore)
 }
+
 var score=0;
 var chosenAnswer=-1;
 
 var chosenIndices=[];
 var gameState=0;
 
-function capitalizeFirstLetter(string,d) {
+function changeMode(m){
+  mode=m;
+  localStorage.setItem("mode",mode);
+  chosenAnswer=-1;
+
+  chosenIndices=[];
+  gameState=0;
+
+  document.getElementById("title").innerHTML=["Toki Pona",'Sitelen Pona',"Sitelen Sitelen","S.S. Syllables"][mode]
+  document.getElementById("mp0").classList.remove("active");
+  document.getElementById("mp1").classList.remove("active");
+  document.getElementById("mp2").classList.remove("active");
+  document.getElementById("mp3").classList.remove("active");
+
+  document.getElementById("mp"+mode).classList.add("active");
+
+  var highScore = localStorage.getItem("highScore"+mode);
+  if (highScore==null){
+      highScore=0;
+  } else {
+    highscore=parseInt(highScore)    
+  }
+  score=0;
+
+  document.getElementById("currentStreak").innerText=score;
+  document.getElementById("longestStreak").innerText=highScore;
+  
+
+  startPopulate(true);
+}
+
+function formatWord(string,d) {
+  console.log("formatting "+string+","+d)
     if (d===1){
-      return string.charAt(0).toUpperCase() + string.slice(1);
+      if (mode===0){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      } else {
+        return string;
+      }
     } else {
-      return string;    
+      if (mode===0){
+        return string;
+      } else if (mode===1){
+        if (string==="o"){
+          string="oo";
+        }
+        if (string==="a"){
+          string="aa";
+        }
+        if (string==="e"){
+          string="ee";
+        }
+        return `<span class="sitelenpona">${string}</span>`;  
+      } else if (mode===2){
+        return `<img class="sitelensitelen" src="sitelen_sitelen/${string}.svg">`
+      } else {
+        return `<img class="sitelensitelen" src="silben/${string}.svg">`        
+      }
+    }
+}
+
+
+function targetFormat(string,d) {
+    if (d===1){
+      return string.toUpperCase();
+    } else {
+      if (mode===0){
+        return string;
+      } else if (mode===1){
+        return `<span class="sitelenpona">${string}</span>`;  
+      } else if (mode===2){
+        return `<img class="sitelensitelen" src="sitelen_sitelen/${string}.svg">`
+      } else {
+        return `<img class="sitelensitelen" src="silben/${string}.svg">`
+      }
     }
 }
 
 function startPopulate(qMode){
     if (qMode){
         chosenIndices=[];
+
+        var dict = mode<3?dictionary:dictionary_ss_syllables;
+        if (mode===2){
+          dict=dictionary_ss;        
+        }
+        
         //pick 5 random rows
-        rows = fisherYates(dictionary,choiceCount);
+        rows = fisherYates(dict,choiceCount);
         //pick 1 to be the answer at random
         answer = getRandomInt(0,5);
         //pick language direction
@@ -272,12 +372,11 @@ function startPopulate(qMode){
         var tw = document.getElementById("targetWord");
         var tr = rows[answer];
         var td = tr[1-direction];
+        if (mode>0){
+          td=tr[0];
+        }
         var s = td[getRandomInt(0,td.length)];
-        // if (direction===1){
-        //     var im = `<img class="sitelensitelen" src="word-glyphs/${s.toLowerCase()}.svg">`;
-        //     s=im+" "+s+" "+im;
-        // }
-        tw.innerHTML = s;
+        tw.innerHTML = targetFormat(s,1-direction);
     }
 
     for (var i=0;i<5;i++){
@@ -285,25 +384,22 @@ function startPopulate(qMode){
         var d = r[direction];
         var d2 = r[1-direction];
 
+        if (mode>0){
+          d2=r[0];
+          d=r[0];
+        }
         var el = document.getElementById("choice"+i);
         if (qMode){
             chosenIndices.push(getRandomInt(0,d.length));
-            d[chosenIndices[i]]=capitalizeFirstLetter(d[chosenIndices[i]],direction);
 
-            var text=d[chosenIndices[i]];
-            // if (direction===0){
-            //     var im = `<img class="sitelensitelen" src="word-glyphs/${text.toLowerCase()}.svg">`;
-            //     text=im+" "+text+" "+im;
-            // }
+            var text=formatWord(d[chosenIndices[i]],direction);
 
             el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice('+i+')">'+text+"</a>";
         } else {
-            el.innerHTML=d[chosenIndices[i]];
-            // if (direction===0){
-            //     var im = `<img class="sitelensitelen" src="word-glyphs/${el.innerHTML}.svg">`;
-            //     el.innerHTML=im+" "+el.innerHTML+" "+im;
-            // }
-            def=d2[getRandomInt(0,d2.length)];
+            el.innerHTML=formatWord(d[chosenIndices[i]],direction);
+            console.log("direction = "+direction)
+            def=formatWord(d2[getRandomInt(0,d2.length)],1-direction);
+
             if (answer===i && answer===chosenAnswer) {
                 el.innerHTML = '<a class="list-group-item itemLink  disabled"  style="color:green; background-color:lightgreen;">'+el.innerHTML+" "+check+"("+def+")"+'</a>';
             } else if (answer===i) {
@@ -333,7 +429,7 @@ function clickChoice(i){
         score++;
         if (score>highScore){
             highScore=score;
-            localStorage.setItem("highScore",score);
+            localStorage.setItem("highScore"+mode,score);
         }
     } else {
         score=0;        
@@ -354,7 +450,12 @@ function clickContinue(){
 var choiceEl=[];
 function doStart(){
 
-    startPopulate(true);
+    changeMode(mode);
+
+    $('#mp0').on('click', function(event) {if (mode!==0) {changeMode(0)}});
+    $('#mp1').on('click', function(event) {if (mode!==1) {changeMode(1)}});
+    $('#mp2').on('click', function(event) {if (mode!==2) {changeMode(2)}});
+    $('#mp3').on('click', function(event) {if (mode!==3) {changeMode(3)}});
 }
 
 var shell = require('electron').shell;
@@ -376,7 +477,7 @@ var shell = require('electron').shell;
 
 <!-- The Modal -->
 <div class="modal" id="myModal">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <!-- Modal Header -->
@@ -384,41 +485,41 @@ var shell = require('electron').shell;
         <h4 class="modal-title"><svg class="bi bi-gear" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 014.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 01-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 011.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 012.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 012.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 011.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 01-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 018.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 001.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 00.52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 00-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 00-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 00-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 00-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 00.52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 001.255-.52l.094-.319z" clip-rule="evenodd"/>
   <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 100 4.492 2.246 2.246 0 000-4.492zM4.754 8a3.246 3.246 0 116.492 0 3.246 3.246 0 01-6.492 0z" clip-rule="evenodd"/>
-</svg> tenpo pi toki utala</h4>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">&times;</button>
+</svg>&nbsp;Settings</h4>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
-      <div class="modal-body leftalign">
-        
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-  <label class="form-check-label" for="defaultCheck1">
-    toki pona (Lasina/Latin)
+      <div class="modal-body ">
+      
+      <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active" id="mp0">
+    <input type="radio" name="options" id="m0" autocomplete="off" checked> Toki Pona
   </label>
-</div>
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-  <label class="form-check-label" for="defaultCheck1">
-    toki pona (sitelen pona)
+  <label class="btn btn-secondary" id="mp1">
+    <input type="radio" name="options" id="m1" autocomplete="off"> Sitelen Pona
   </label>
-</div>
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-  <label class="form-check-label" for="defaultCheck1">
-    toki pona (sitelen sitelen)
+  <label class="btn btn-secondary" id="mp2">
+    <input type="radio" name="options" id="m2" autocomplete="off"> Sitelen Sitelen
+  </label>
+  <label class="btn btn-secondary" id="mp3">
+    <input type="radio" name="options" id="m3" autocomplete="off"> Sitelen Sitelen Syllables
   </label>
 </div>
 
 <hr>
-<b>pona tawa ja ni:</b>
+Toki Utala V1.5
+<p>
+<b>Credits:</b>
 <ul>
-<li>sitelen pi sitelen sitelen li tan <a href="https://github.com/sumpygump/sitelen-sitelen">jan sumpygrump</a> en jan Same.
-<li>sitelen pi sitelen pona li tan <a href="https://github.com/janSame/linja-pona/">jan Same</a>
+<li>Sitelen Sitelen characters by <a href="https://github.com/sumpygump/sitelen-sitelen">jan sumpygrump</a> en <a href="https://github.com/janSame/linja-pona/">jan Same</a>.
+<li>Sitelen Pona characters by <a href="https://github.com/janSame/linja-pona/">jan Same</a>.
+<li>The rest by <a href="https://github.com/sponsors/increpare">jan Inkepa</a>
 </ul>
 
 <hr>
-<button type="button" class="btn btn-danger" data-dismiss="modal">o weka e sona pi tenpo pini (clear history)</button>
+<button type="button" class="btn btn-danger" data-dismiss="modal">Clear History</button>
+
 
 
       </div>
@@ -438,7 +539,7 @@ var shell = require('electron').shell;
 </button>
 
 
-                <h1 id="title">toki utala </h1>
+                <h1 id="title">toki utala</h1>
                 <p>
                 <hr>
                 <p>
