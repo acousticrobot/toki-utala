@@ -359,7 +359,7 @@ function startPopulate(qMode){
         if (mode===2){
           dict=dictionary_ss;        
         }
-        
+
         //pick 5 random rows
         rows = fisherYates(dict,choiceCount);
         //pick 1 to be the answer at random
@@ -394,7 +394,7 @@ function startPopulate(qMode){
 
             var text=formatWord(d[chosenIndices[i]],direction);
 
-            el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice('+i+')">'+text+"</a>";
+            el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice(event,'+i+')"  onclick="clickChoice(event,'+i+')">'+text+"</a>";
         } else {
             el.innerHTML=formatWord(d[chosenIndices[i]],direction);
             console.log("direction = "+direction)
@@ -420,8 +420,9 @@ function startPopulate(qMode){
     document.getElementById("longestStreak").innerText=highScore;
 }
 
-function clickChoice(i){
+function clickChoice(evt,i){
     if (gameState===1){
+        evt.preventDefault();
         return;
     }
     gameState=1;
@@ -437,14 +438,19 @@ function clickChoice(i){
     chosenAnswer=i;
     startPopulate(false);
 
+    evt.preventDefault();
 }
 
-function clickContinue(){
+function clickContinue(evt){
     if (gameState===0){
+
+        evt.preventDefault();
         return;
     }
     gameState=0;
     startPopulate(true);
+
+    evt.preventDefault();
 }
 
 var choiceEl=[];
@@ -557,7 +563,7 @@ Toki Utala V1.5
                   <span id="choice4"></span> <span id = "meaning4"></span>
                 </div>
                 <p>
-                <div><button class="btn btn-block btn-lg btn-info" id="continueButton"  ontouchstart="clickContinue()">continue</button></class>
+                <div><button class="btn btn-block btn-lg btn-info" id="continueButton"  ontouchstart="clickContinue(event)"  onclick="clickContinue(event)" >continue</button></class>
 
 
 
