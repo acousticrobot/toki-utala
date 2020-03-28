@@ -33,6 +33,118 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <title>Toki Utala</title>
 <script src="js/dictionary.js" type="text/javascript" charset="utf-8" async defer></script>
+
+
+<style type="text/css">
+    
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 320px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-label-group > input,
+.form-label-group > label {
+  height: 3.125rem;
+  padding: .75rem;
+}
+
+.form-label-group > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  pointer-events: none;
+  cursor: text; /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: .25rem;
+}
+
+.form-label-group input:not(:placeholder-shown) ~ label {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+/* Fallback for Edge
+-------------------------------------------------- */
+@supports (-ms-ime-align: auto) {
+  .form-label-group > label {
+    display: none;
+  }
+  .form-label-group input::-ms-input-placeholder {
+    color: #777;
+  }
+}
+
+/* Fallback for IE
+-------------------------------------------------- */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .form-label-group > label {
+    display: none;
+  }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777;
+  }
+}
+
+
+
+
+</style>
 <style type="text/css">
 body {
     overflow: hidden
@@ -79,9 +191,22 @@ li {
 
 
 #continueButton{
+    visibility:hidden;
+}
+
+h1{
+    height:auto;
+}
+
+.sitelensitelen{
+    height:1em;
+    width:1em;
 }
         </style>
-                <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
         <script type="text/javascript" >
             
 var check="✓";
@@ -139,7 +264,12 @@ function startPopulate(qMode){
         var tw = document.getElementById("targetWord");
         var tr = rows[answer];
         var td = tr[1-direction];
-        tw.innerText = td[getRandomInt(0,td.length)];
+        var s = td[getRandomInt(0,td.length)];
+        // if (direction===1){
+        //     var im = `<img class="sitelensitelen" src="word-glyphs/${s.toLowerCase()}.svg">`;
+        //     s=im+" "+s+" "+im;
+        // }
+        tw.innerHTML = s;
     }
 
     for (var i=0;i<5;i++){
@@ -151,9 +281,20 @@ function startPopulate(qMode){
         if (qMode){
             chosenIndices.push(getRandomInt(0,d.length));
             d[chosenIndices[i]]=capitalizeFirstLetter(d[chosenIndices[i]]);
-            el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice('+i+')">'+d[chosenIndices[i]]+"</a>";
+
+            var text=d[chosenIndices[i]];
+            // if (direction===0){
+            //     var im = `<img class="sitelensitelen" src="word-glyphs/${text.toLowerCase()}.svg">`;
+            //     text=im+" "+text+" "+im;
+            // }
+
+            el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice('+i+')">'+text+"</a>";
         } else {
             el.innerHTML=d[chosenIndices[i]];
+            // if (direction===0){
+            //     var im = `<img class="sitelensitelen" src="word-glyphs/${el.innerHTML}.svg">`;
+            //     el.innerHTML=im+" "+el.innerHTML+" "+im;
+            // }
             def=d2[getRandomInt(0,d2.length)];
             if (answer===i && answer===chosenAnswer) {
                 el.innerHTML = '<a class="list-group-item itemLink  disabled"  style="color:green; background-color:lightgreen;">'+el.innerHTML+" "+check+"("+def+")"+'</a>';
@@ -167,9 +308,9 @@ function startPopulate(qMode){
         }
     }
     if (qMode){
-        var el = document.getElementById("continueButton").style.display="none";
+        var el = document.getElementById("continueButton").style.visibility="hidden";
     } else {
-        var el = document.getElementById("continueButton").style.display="initial";        
+        var el = document.getElementById("continueButton").style.visibility="visible";        
     }
     document.getElementById("currentStreak").innerText=score;
     document.getElementById("longestStreak").innerText=highScore;
@@ -210,30 +351,36 @@ function doStart(){
         </script>
 
     </head>
-    <body onload="doStart()">
-        <div class="app">
-            <h1 id="title">Toki Utala</h1>
-            <p>
-            <hr>
-            <p>
-            <span class="streakText">Current Streak: <span id="currentStreak">0</span></span> &nbsp; &nbsp; &nbsp; <span class="streakText">Longest Streak: <span id="longestStreak">0</span></span>
-            <p>
-            <hr>
-            <p>
-            <h2 id = "targetWord"></h2>
-            <p>
-<div class="list-group">
-  <span id="choice0"></span> <span id = "meaning0"></span>
-  <span id="choice1"></span> <span id = "meaning1"></span>
-  <span id="choice2"></span> <span id = "meaning2"></span>
-  <span id="choice3"></span> <span id = "meaning3"></span>
-  <span id="choice4"></span> <span id = "meaning4"></span>
-</div>
-<p>
-<div><button class="btn btn-block btn-lg btn-info" id="continueButton"  ontouchstart="clickContinue()">continue</button></class>
+    <body onload="doStart()" class="">
+
+<div class="app form-signin">
+
+        
+
+                <h1 id="title">Toki Utala</h1>
+                <p>
+                <hr>
+                <p>
+                <span class="streakText">Current Streak: <span id="currentStreak">0</span></span> <br> <span class="streakText">Longest Streak: <span id="longestStreak">0</span></span>
+                <p>
+                <hr>
+                <p>
+                <h2 id = "targetWord"></h2>
+                <p>
+                <div class="list-group">
+                  <span id="choice0"></span> <span id = "meaning0"></span>
+                  <span id="choice1"></span> <span id = "meaning1"></span>
+                  <span id="choice2"></span> <span id = "meaning2"></span>
+                  <span id="choice3"></span> <span id = "meaning3"></span>
+                  <span id="choice4"></span> <span id = "meaning4"></span>
+                </div>
+                <p>
+                <div><button class="btn btn-block btn-lg btn-info" id="continueButton"  ontouchstart="clickContinue()">continue</button></class>
+
+
+
 
         </div>
-
 
 
     </body>

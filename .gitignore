@@ -1,2 +1,2 @@
-
-platforms/ios
+platforms/*
+node_modules/*
