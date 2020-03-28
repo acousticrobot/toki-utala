@@ -88,6 +88,7 @@ var dictionary = [
 [["poka"    ],["side", "hip", "next to", "in the accompaniment of", "with", "neighbouring"]],
 [["poki"    ],["container", "box", "bowl", "cup", "glass"]],
 [["pona"    ],["good", "simplicity", "positivity", "good", "simple", "positive", "nice", "correct", "right", "great!", "good!", "thanks!", "ok!", "cool!", "yay!", "improve", "fix", "repair", "make good"]],
+[["pu"    	],["interacting with the official Toki Pona book"]],
 [["sama"    ],["same", "similar", "equal", "of equal status or position", "like", "as", "seem"]],
 [["seli"    ],["fire", "warmth", "heat", "hot", "warm", "cooked", "heat", "warm up", "cook"]],
 [["selo"    ],["outside", "surface", "skin", "shell", "bark", "shape", "peel"]],
