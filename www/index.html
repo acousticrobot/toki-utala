@@ -346,7 +346,11 @@ function formatWord(string,d) {
 
 function targetFormat(string,d) {
     if (d===1){
-      return string.toUpperCase();
+      if (mode===0){
+        return string.toUpperCase();
+      } else {
+        return string;
+      }
     } else {
       if (mode===0){
         return string;
@@ -529,7 +533,7 @@ var shell = require('electron').shell;
 </div>
 
 <hr>
-Toki Utala V1.5.2
+Toki Utala V1.5.3
 <p>
 <b>Credits:</b>
 <ul>
