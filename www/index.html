@@ -160,6 +160,9 @@ body {
 }
 
 
+.hide {
+  visibility: hidden;
+}
 
 
 </style>
@@ -400,10 +403,16 @@ function startPopulate(qMode){
 
             var text=formatWord(d[chosenIndices[i]],direction);
 
+            if (mode>0 && direction===1){
+              def=formatWord("en",1-direction);
+              text ="<span class='hide'>("+def+")</span>"+text+"<span class='hide'>("+def+")</span>"
+            }
+
             el.innerHTML= '<a class="list-group-item itemLink"  ontouchstart="clickChoice(event,'+i+')"  onclick="clickChoice(event,'+i+')">'+text+"</a>";
+
+
         } else {
             el.innerHTML=formatWord(d[chosenIndices[i]],direction);
-            console.log("direction = "+direction)
             def=formatWord(d2[getRandomInt(0,d2.length)],1-direction);
 
             if (answer===i && answer===chosenAnswer) {
