@@ -77,7 +77,7 @@ var dictionary = [
 [["pan" ],["grain", "cereal","barley","oats","rice","bread","pasta"]],
 [["pana"    ],["give", "put", "send", "place", "release", "emit", "cause", "giving", "transfer"]],
 [["pi"  ],["of", "belonging to","(divides a second noun group that describes a first noun group)"]],
-[["pilin"   ],["feelings", "emotions", "heart", "to emotional experience","feeling" "sense","an emotional experience"]],
+[["pilin"   ],["feelings", "emotions", "heart", "to emotional experience","feeling","sense","an emotional experience"]],
 [["pimeja"  ],["black", "dark", "darkness", "shadows", "darken","unlit"]],
 [["pini"    ],["end", "tip", "completed", "finished", "past", "done", "ago", "finish", "close", "end", "turn off"]],
 [["pipi"    ],["bug", "insect", "spider","ant"]],
@@ -116,7 +116,7 @@ var dictionary = [
 [["walo"    ],["white", "light (colour)", "white thing", "white part", "whiteness", "pale","light colour"]],
 [["wan" ],["one", "a", "unit", "element", "particle", "part", "piece", "unite", "make one","unique","1","united"]],
 [["waso"    ],["bird", "winged animal","flying creature"]],
-[["wawa"    ],["energy", "strength", "power", "energetic", "strong", "fierce", "intense", "sure", "energetic","intense""confident", "strengthen", "energize", "empower"]],
+[["wawa"    ],["energy", "strength", "power", "energetic", "strong", "fierce", "intense", "sure", "energetic", "intense", "confident", "strengthen", "energize", "empower"]],
 [["weka"    ],["away", "absent", "missing", "absence", "throw away", "remove", "get rid of","ignored"]],
 [["wile"    ],["to want", "need wish", "want", "have to", "must", "will", "should", "desire", "need", "will", "necessary"]]
 ];
