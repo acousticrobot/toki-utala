@@ -94,6 +94,7 @@ body {
   transition: all .1s ease-in-out;
 }
 
+
 .form-label-group input::-webkit-input-placeholder {
   color: transparent;
 }
@@ -219,6 +220,11 @@ h1{
 .sitelensitelen{
     height:2em;
 }
+
+/*
+.btn.active:before {
+   content: "<span class='glyphicon glyphicon-earphone pull-left'></span>";
+}*/
         </style>
 
 <script src="js/jquery-3.3.1.slim.min.js" ></script>
@@ -289,7 +295,7 @@ function changeMode(m){
 
   document.getElementById("mp"+mode).classList.add("active");
 
-  var highScore = localStorage.getItem("highScore"+mode);
+  highScore = localStorage.getItem("highScore"+mode);
   if (highScore==null){
       highScore=0;
   } else {
