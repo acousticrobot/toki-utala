@@ -472,15 +472,28 @@ function clickContinue(evt){
     evt.preventDefault();
 }
 
+function clearHistory(){
+  localStorage.setItem("highScore0",0);
+  localStorage.setItem("highScore1",1);
+  localStorage.setItem("highScore2",2);
+  localStorage.setItem("highScore3",3);
+  highScore=0;
+  score=0;
+  changeMode(mode);
+}
+
 var choiceEl=[];
 function doStart(){
 
     changeMode(mode);
 
-    $('#mp0').on('click', function(event) {if (mode!==0) {changeMode(0)}});
-    $('#mp1').on('click', function(event) {if (mode!==1) {changeMode(1)}});
-    $('#mp2').on('click', function(event) {if (mode!==2) {changeMode(2)}});
-    $('#mp3').on('click', function(event) {if (mode!==3) {changeMode(3)}});
+    $('#mp0').on('click touchstart', function(event) {if (mode!==0) {changeMode(0)} event.preventDefault();});
+    $('#mp1').on('click touchstart', function(event) {if (mode!==1) {changeMode(1)} event.preventDefault();});
+    $('#mp2').on('click touchstart', function(event) {if (mode!==2) {changeMode(2)} event.preventDefault();});
+    $('#mp3').on('click touchstart', function(event) {if (mode!==3) {changeMode(3)} event.preventDefault();});
+
+
+    $('#clearhistory').on('click touchstart', function(event) { clearHistory(); event.preventDefault();})
 }
 
 var shell = require('electron').shell;
@@ -544,7 +557,7 @@ Toki Utala V1.5.3
 </ul>
 
 <hr>
-<button type="button" class="btn btn-danger" data-dismiss="modal">Clear History</button>
+<button type="button" class="btn btn-danger" id="clearhistory">Clear History</button>
 
 
 
