@@ -150,6 +150,7 @@ var dictionary_ss = [
 [["kepeken" ],["use", "with"]],
 [["kili"    ],["fruit", "pulpy vegetable", "mushroom"]],
 [["kin" ],["also", "too", "even", "indeed"]],
+[["kipisi"],["cut","divide"]],
 [["kiwen"   ],["hard", "solid", "stone-like", "made of stone or metal", "hard thing", "rock", "stone", "metal", "mineral", "clay"]],
 [["ko"  ],["semi-solid substance", "squishy substance", "paste", "powder", "gum"]],
 [["kon" ],["air", "wind", "smell", "soul", "air-like", "ethereal", "gaseous"]],
