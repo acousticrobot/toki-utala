@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="56" id="com.increpare.tokiutala" version="1.5.5" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget android-versionCode="57" id="com.increpare.tokiutala" version="1.5.6" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Toki Utala</name>
     <description>A vocabulary testing program for the language toki pona.</description>
     <author email="analytic@gmail.com" href="http://www.increpare.com">increpare</author>
