@@ -420,7 +420,11 @@ function startPopulate(qMode){
 
         } else {
             el.innerHTML=formatWord(d[chosenIndices[i]],direction);
-            def=formatWord(d2[getRandomInt(0,d2.length)],1-direction);
+            var di = getRandomInt(0,d2.length);
+            if (mode>0){
+              di=0;
+            }
+            def=formatWord(d2[di],1-direction);
 
             if (answer===i && answer===chosenAnswer) {
                 el.innerHTML = '<a class="list-group-item itemLink  disabled"  style="color:green; background-color:lightgreen;">'+el.innerHTML+" "+check+"("+def+")"+'</a>';
