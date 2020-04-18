@@ -403,7 +403,11 @@ function startPopulate(qMode){
         }
         var el = document.getElementById("choice"+i);
         if (qMode){
-            chosenIndices.push(getRandomInt(0,d.length));
+            var ci = getRandomInt(0,d.length);
+            if (mode>0){
+              ci=0;
+            }
+            chosenIndices.push(ci);
 
             var text=formatWord(d[chosenIndices[i]],direction);
 
