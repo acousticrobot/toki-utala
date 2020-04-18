@@ -67,7 +67,7 @@ var dictionary = [
 [["ni"  ],["this", "that"]],
 [["nimi"    ],["word", "name"]],
 [["noka"    ],["leg", "foot","organ of locomotion","bottom part","lower part"]],
-[["o"   ],["Oh", "hey!","(after a noun phrase to show who is being called or addressed)","(before a verb to expess a verb or request)","(replacing li to exprss a wish or desire)"]],
+[["o"   ],["Oh", "hey!","(after a noun phrase to show who is being called or addressed)","(before a verb to expess a wish or request)","(replacing li to exprss a wish or desire)"]],
 [["olin"    ],["love", "to love (a person)","have compasion for","to respect","to show affection to"]],
 [["ona" ],["she", "he", "it", "they", "her", "his", "its", "their"]],
 [["open"    ],["open", "turn on","to begin","to start"]],
