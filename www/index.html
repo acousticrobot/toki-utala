@@ -324,6 +324,7 @@ function formatWord(string,d) {
       if (mode===0){
         return string;
       } else if (mode===1){
+
         if (string==="o"){
           string="oo";
         }
@@ -333,6 +334,7 @@ function formatWord(string,d) {
         if (string==="e"){
           string="ee";
         }
+        
         return `<span class="sitelenpona">${string}</span>`;  
       } else if (mode===2){
         return `<img class="sitelensitelen" src="sitelen_sitelen/${string}.svg">`
@@ -354,6 +356,17 @@ function targetFormat(string,d) {
       if (mode===0){
         return string;
       } else if (mode===1){
+
+        if (string==="o"){
+          string="oo";
+        }
+        if (string==="a"){
+          string="aa";
+        }
+        if (string==="e"){
+          string="ee";
+        }
+
         return `<span class="sitelenpona">${string}</span>`;  
       } else if (mode===2){
         return `<img class="sitelensitelen" src="sitelen_sitelen/${string}.svg">`
