@@ -202,7 +202,7 @@ li {
 }
 
 
-.streakText {
+.scoreText {
     border-radius:5px;
     padding:5px 10px;
 }
@@ -246,7 +246,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function fisherYates(myArray,nb_picks)
+function fisherYates(myArray)
 {
     for (i = myArray.length-1; i > 1  ; i--)
     {
@@ -255,13 +255,12 @@ function fisherYates(myArray,nb_picks)
         myArray[i] = myArray[r];
         myArray[r] = t;
     }
-
-    return myArray.slice(0,nb_picks);
 }
 
 
 var choiceCount=5;
 var answer=-1;
+var answerRow=null;
 var mode = localStorage.getItem("mode");
 if (mode==null){
   mode=0;
@@ -306,9 +305,16 @@ function changeMode(m){
   }
   score=0;
 
-  document.getElementById("currentStreak").innerText=score;
-  document.getElementById("longestStreak").innerText=highScore;
+  document.getElementById("currentScore").innerText=score;
+  document.getElementById("highestScore").innerText=highScore;
   
+  // reset all dict row cooldowns and scores
+  var dict = getDict();
+  for(var i=0;i<dict.length;i++)
+  {
+	dict[i][2] = -1;
+	dict[i][3] = 0;
+  }
 
   startPopulate(true);
 }
@@ -376,19 +382,75 @@ function targetFormat(string,d) {
     }
 }
 
+function getDict()
+{
+	var dict = mode<3?dictionary:dictionary_ss_syllables;
+	if (mode===2){
+	  dict=dictionary_ss;
+	}
+	return dict;
+}
+
+function cooldownSort(a, b)
+{
+	// grab cooldowns
+	var ac = a[2];
+	var bc = b[2];
+	
+	// handle cooldowns not started yet
+	if( ac == -1 && bc == -1 )
+	{
+		// both haven't started
+		return 0;
+	}
+	else if( ac == -1 )
+	{
+		// a hasn't started, is later
+		return 1;
+	}
+	else if( bc == -1 )
+	{
+		// b hasn't started, is later
+		return -1;
+	}
+	
+	// just use cooldown length
+	return ac - bc;
+}
+
+
 function startPopulate(qMode){
     if (qMode){
         chosenIndices=[];
 
-        var dict = mode<3?dictionary:dictionary_ss_syllables;
-        if (mode===2){
-          dict=dictionary_ss;        
-        }
+        var dict = getDict();
 
-        //pick 5 random rows
-        rows = fisherYates(dict,choiceCount);
-        //pick 1 to be the answer at random
-        answer = getRandomInt(0,5);
+		// randomise dict so that same-cooldown values don't appear in obvious order
+		fisherYates(dict);
+		
+		// sort by cooldowns
+		dict.sort(cooldownSort);
+		
+        //pick answer and other rows
+		if( dict[0][2] <= 0)	// if start of dict is ready to be used now
+		{
+			// yes
+			answerRow = dict[0];
+			rows = dict.slice(0,5);
+		}
+		else
+		{
+			// no, grab four from front and answer from the back
+			answerRow = dict[dict.length-1];
+			rows = dict.slice(0,4)
+			rows.push(answerRow)
+		}
+		
+		// shuffle rows
+		fisherYates(rows);
+		
+        // get index of answer
+        answer = rows.indexOf(answerRow);
         //pick language direction
         direction = getRandomInt(0,2);
         //populate screendat
@@ -459,8 +521,8 @@ function startPopulate(qMode){
     } else {
         var el = document.getElementById("continueButton").style.visibility="visible";        
     }
-    document.getElementById("currentStreak").innerText=score;
-    document.getElementById("longestStreak").innerText=highScore;
+    document.getElementById("currentScore").innerText=score;
+    document.getElementById("highestScore").innerText=highScore;
 }
 
 function clickChoice(evt,i){
@@ -470,13 +532,47 @@ function clickChoice(evt,i){
     }
     gameState=1;
     if (i===answer){
-        score++;
+		// correct
+		
+		// increase answer row score and cooldown
+		answerRow[3] += 1;
+		answerRow[2] = 2 ** answerRow[3];	// cooldown doubles every point
+		
+		// decrease all active cooldowns and calc score
+		var dict = getDict();
+		score = 0;
+		for( var j = 0; j < dict.length; ++j )
+		{
+			if( dict[j][2] > 0 )
+			{
+				dict[j][2] -= 1;
+			}
+			score += dict[j][3];
+		}
+		
+		// update highscore
         if (score>highScore){
             highScore=score;
             localStorage.setItem("highScore"+mode,score);
         }
     } else {
+		// incorrect
+		
+		// reset answer row score and cooldown
+		answerRow[2] = 0;
+		answerRow[3] = 0;
+		
+		// reset incorrect answer score and cooldown
+		rows[i][2] = 0;
+		rows[i][3] = 0;
+		
+		// update score
+		var dict = getDict();
         score=0;        
+		for( var j = 0; j < dict.length; ++j )
+		{
+			score += dict[j][3];
+		}
     }
     chosenAnswer=i;
     startPopulate(false);
@@ -618,7 +714,7 @@ Toki Utala V1.6.0
                 <p>
                 <hr>
                 <p>
-                <span class="streakText">Current Streak: <span id="currentStreak">0</span></span> <br> <span class="streakText">Longest Streak: <span id="longestStreak">0</span></span>
+                <span class="scoreText">Current Score: <span id="currentScore">0</span></span> <br> <span class="scoreText">Highest Score: <span id="highestScore">0</span></span>
                 <p>
                 <hr>
                 <p>
